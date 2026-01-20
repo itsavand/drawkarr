@@ -52,7 +52,7 @@ export function Chat({ messages, onSendMessage, myPlayerId }: ChatProps) {
   };
 
   return (
-    <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[95%] sm:max-w-md px-2 sm:px-4 z-[100]">
+    <div className="fixed bottom-32 sm:bottom-36 left-1/2 -translate-x-1/2 w-full max-w-[95%] sm:max-w-md px-2 sm:px-4 z-[100]">
       <AnimatePresence>
         {isOpen && (
           <motion.div
