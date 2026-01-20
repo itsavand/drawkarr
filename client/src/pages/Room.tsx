@@ -21,8 +21,17 @@ import {
 export default function Room() {
   const [, params] = useRoute("/room/:code");
   const [, setLocation] = useLocation();
-  const { gameState, connected, startGame, votePlayer, playAgain, setReady, messages, sendChatMessage, leaveRoom } =
-    useGame();
+  const {
+    gameState,
+    connected,
+    startGame,
+    votePlayer,
+    playAgain,
+    setReady,
+    messages,
+    sendChatMessage,
+    leaveRoom,
+  } = useGame();
   const { toast } = useToast();
 
   const code = params?.code;
@@ -45,7 +54,7 @@ export default function Room() {
     navigator.clipboard.writeText(window.location.href);
     toast({
       title: "لینک هاتە کۆپیکرن!",
-      description: "ل گەل هەڤالێن خۆ پارڤە بکە.",
+      description: "ل گەل هەڤالێن خۆ بلاف بکە.",
     });
   };
 
@@ -99,7 +108,7 @@ export default function Room() {
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
         <h2 className="text-xl font-bold text-muted-foreground">
-          پەیوەندی دێتە چێکرن...
+          خو بگرە... ماتو هندی بلەزی...
         </h2>
       </div>
     );
@@ -126,10 +135,10 @@ export default function Room() {
   return (
     <div className="min-h-screen pb-24 p-4 md:p-8 max-w-5xl mx-auto" dir="rtl">
       {/* Persistent Toggleable Chat (Visible in all phases) */}
-      <Chat 
-        messages={messages} 
-        onSendMessage={sendChatMessage} 
-        myPlayerId={me?.id} 
+      <Chat
+        messages={messages}
+        onSendMessage={sendChatMessage}
+        myPlayerId={me?.id}
       />
 
       {/* Header */}
@@ -200,7 +209,7 @@ export default function Room() {
                 className="mt-4 gap-2 rounded-xl"
                 onClick={shareCode}
               >
-                <Share2 className="w-4 h-4" /> بڵاوکردنەوە
+                <Share2 className="w-4 h-4" /> بلافكرنا ژوورێ
               </Button>
             </div>
 
@@ -287,7 +296,7 @@ export default function Room() {
                 درەوکەر کییە؟
               </h2>
               <p className="text-lg text-muted-foreground mt-2">
-                کلیکێ ل سەر یاریزانەکێ بکە دا دەنگی بدەیێ!
+                کلیکێ ل سەر یاریزانەکێ بکە دا دەنگی خو بدەیێ!
               </p>
             </div>
 
@@ -342,7 +351,8 @@ export default function Room() {
                   <div className="space-y-6">
                     <div className="text-6xl mb-4">⚠️</div>
                     <h1 className="text-3xl font-black text-destructive leading-tight">
-                      یاری بدوماهیک هات جونکی هین تنی ٢ نەفەر مان رومەکا دی بوخو جیکەن
+                      یاری بدوماهیک هات جونکی هین تنی ٢ نەفەر مان ژووره كا دی
+                      بوخو جیکەن
                     </h1>
                     <Button
                       variant="destructive"
@@ -369,7 +379,7 @@ export default function Room() {
                     <h1 className="text-5xl font-black text-primary">
                       {gameState.room.currentRound >= gameState.room.totalRounds
                         ? `سەرکەفتی: ${winner.name}`
-                        : "دوماهیا رۆندی"}
+                        : "دوماهیا ياريێ"}
                     </h1>
 
                     <div className="bg-muted p-6 rounded-2xl">
@@ -460,7 +470,7 @@ export default function Room() {
                       className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl shadow-xl shadow-primary/30 btn-bounce"
                       onClick={setReady}
                     >
-                      ئەز به رهه فم بۆ یا دی
+                      ئەز به رهه فم بۆ یاريا دی
                     </Button>
                   ) : (
                     <div className="w-full max-w-md h-16 flex items-center justify-center bg-green-100 text-green-700 font-bold rounded-2xl border-2 border-green-200">
