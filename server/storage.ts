@@ -14,7 +14,7 @@ export interface IStorage {
   updateRoomStatus(roomId: number, status: Room["status"], phaseEndTime?: Date): Promise<void>;
   updateRoomRound(roomId: number, round: number): Promise<void>;
   assignRoles(roomId: number, secretWord: string, liarId: number): Promise<void>;
-  submitVote(playerId: number): Promise<void>;
+  submitVote(playerId: number, targetId: number): Promise<void>;
   updateScore(playerId: number, points: number): Promise<void>;
   setReady(playerId: number, isReady: boolean): Promise<void>;
   resetRoom(roomId: number): Promise<void>;
@@ -132,9 +132,9 @@ export class DatabaseStorage implements IStorage {
       .set({ secretWord, liarId })
       .where(eq(rooms.id, roomId));
       
-    // Reset votes
+    // Reset players for new round
     await db.update(players)
-      .set({ isLiar: false, hasVoted: false })
+      .set({ isLiar: false, hasVoted: false, votedFor: null, isReady: false })
       .where(eq(players.roomId, roomId));
 
     // Set liar
@@ -143,9 +143,9 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(players.roomId, roomId), eq(players.id, liarId)));
   }
 
-  async submitVote(playerId: number) {
+  async submitVote(playerId: number, targetId: number) {
     await db.update(players)
-      .set({ hasVoted: true })
+      .set({ hasVoted: true, votedFor: targetId })
       .where(eq(players.id, playerId));
   }
 
@@ -155,7 +155,7 @@ export class DatabaseStorage implements IStorage {
       .where(eq(rooms.id, roomId));
     
     await db.update(players)
-      .set({ isLiar: false, hasVoted: false })
+      .set({ isLiar: false, hasVoted: false, votedFor: null, isReady: false, score: 0 })
       .where(eq(players.roomId, roomId));
   }
 }

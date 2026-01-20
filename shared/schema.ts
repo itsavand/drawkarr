@@ -25,6 +25,7 @@ export const players = pgTable("players", {
   name: text("name").notNull(),
   isLiar: boolean("is_liar").default(false),
   hasVoted: boolean("has_voted").default(false),
+  votedFor: integer("voted_for"),
   isReady: boolean("is_ready").default(false),
   score: integer("score").default(0),
   lastScoreAt: timestamp("last_score_at"),

@@ -24,16 +24,24 @@ export function PlayerList({ players, showVotes = false, onVote, myPlayerId, pha
   const hasVoted = (player: Player) => player.hasVoted;
   const canVote = phase === 'voting' && !players.find(p => p.id === myPlayerId)?.hasVoted;
 
-  // Stable sorting: host first, then by ID to prevent jumping
-  const sortedPlayers = [...players].sort((a, b) => {
-    // If we are in voting phase, we keep a fixed order based on join time (id)
-    // In waiting room, host (idx 0) is usually first, but let's stick to ID for absolute stability
-    return a.id - b.id;
-  });
+  const sortedPlayers = [...players].sort((a, b) => a.id - b.id);
+
+  // Group votes by target player ID
+  const votesByTarget = players.reduce((acc, p) => {
+    // We'll simulate the voting visibility by checking who has a 'votedFor' property
+    // even though the schema only has 'hasVoted'. 
+    // I'll update the server later if needed, but for now I'll use the data if available.
+    const targetId = (p as any).votedFor;
+    if (targetId) {
+      if (!acc[targetId]) acc[targetId] = [];
+      acc[targetId].push(p.id);
+    }
+    return acc;
+  }, {} as Record<number, number[]>);
 
   return (
     <div className="flex flex-col gap-3 w-full max-w-2xl mx-auto">
-      {sortedPlayers.map((player, idx) => (
+      {sortedPlayers.map((player) => (
         <motion.div
           key={player.id}
           layout
@@ -67,13 +75,36 @@ export function PlayerList({ players, showVotes = false, onVote, myPlayerId, pha
                     تۆ
                   </span>
                 )}
-                {idx === 0 && phase === 'waiting' && (
+                {player.id === players[0]?.id && phase === 'waiting' && (
                   <Crown className="w-4 h-4 text-yellow-500" />
                 )}
                 <p className="font-bold text-gray-800 truncate">{player.name}</p>
               </div>
               <p className="text-xs text-gray-500 font-semibold">{player.score} خاڵ</p>
             </div>
+          </div>
+
+          {/* Voter Avatars */}
+          <div className="flex -space-x-1.5 sm:-space-x-2 overflow-hidden flex-row-reverse shrink-0">
+            {votesByTarget[player.id]?.map((voterId) => {
+              const voter = players.find(p => p.id === voterId);
+              if (!voter) return null;
+              return (
+                <motion.div
+                  key={voter.id}
+                  initial={{ scale: 0, x: 5 }}
+                  animate={{ scale: 1, x: 0 }}
+                  className="relative z-10"
+                  title={voter.name}
+                >
+                  <Avatar className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white ring-1 ring-black/5">
+                    <AvatarFallback className={cn("text-[7px] sm:text-[8px] font-bold", getAvatarColor(voter.name))}>
+                      {voter.name.slice(0, 1).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </motion.div>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-1 min-w-[40px] justify-end">

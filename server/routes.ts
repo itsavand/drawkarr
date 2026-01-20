@@ -296,17 +296,28 @@ export async function registerRoutes(
         }
 
         if (msg.type === "vote" && currentSessionId && currentRoomCode) {
-          // ... existing vote logic
           const player = await storage.getPlayer(currentSessionId);
           if (player && !player.hasVoted) {
-            await storage.submitVote(player.id);
+            await storage.submitVote(player.id, msg.targetId);
             const room = await storage.getRoom(currentRoomCode);
             const players = await storage.getRoomPlayers(room!.id);
 
             if (players.every((p) => p.hasVoted)) {
-              for (const p of players) {
-                if (!p.isLiar) await storage.updateScore(p.id, 3);
+              // Calculate results
+              const liarId = room!.liarId;
+              const liarVotes = players.filter(p => (p as any).votedFor === liarId).length;
+              const nonLiarCount = players.length - 1;
+
+              if (liarVotes > nonLiarCount / 2) {
+                // Liar caught - everyone else gets points
+                for (const p of players) {
+                  if (!p.isLiar) await storage.updateScore(p.id, 3);
+                }
+              } else {
+                // Liar escaped - liar gets points
+                if (liarId) await storage.updateScore(liarId, 5);
               }
+              
               await storage.updateRoomStatus(room!.id, "finished");
             }
             await broadcastRoomState(currentRoomCode);
