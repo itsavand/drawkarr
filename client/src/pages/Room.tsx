@@ -21,7 +21,7 @@ import {
 export default function Room() {
   const [, params] = useRoute("/room/:code");
   const [, setLocation] = useLocation();
-  const { gameState, connected, startGame, votePlayer, playAgain, setReady, messages, sendChatMessage } =
+  const { gameState, connected, startGame, votePlayer, playAgain, setReady, messages, sendChatMessage, leaveRoom } =
     useGame();
   const { toast } = useToast();
 
@@ -168,7 +168,7 @@ export default function Room() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="text-destructive gap-2"
-                onClick={() => setLocation("/")}
+                onClick={leaveRoom}
               >
                 <LogOut className="w-4 h-4" />
                 <span>دەرکەفتن</span>

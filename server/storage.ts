@@ -158,6 +158,18 @@ export class DatabaseStorage implements IStorage {
       .set({ isLiar: false, hasVoted: false, votedFor: null, isReady: false, score: 0 })
       .where(eq(players.roomId, roomId));
   }
+  async removePlayer(sessionId: string) {
+    const player = await this.getPlayer(sessionId);
+    if (!player) return undefined;
+
+    const room = await db.select().from(rooms).where(eq(rooms.id, player.roomId));
+    if (room.length === 0) return undefined;
+
+    await db.delete(players).where(eq(players.id, player.id));
+    
+    // If room is empty, optionally delete it or just return
+    return { roomId: player.roomId, roomCode: room[0].code };
+  }
 }
 
 export const storage = new DatabaseStorage();

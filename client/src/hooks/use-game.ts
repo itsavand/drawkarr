@@ -173,6 +173,11 @@ export function useGame() {
   const playAgain = () => sendAction('play_again');
   const setReady = () => sendAction('ready');
   const sendChatMessage = (content: string) => sendAction('chat', { content });
+  const leaveRoom = () => {
+    sendAction('leave');
+    localStorage.removeItem("party_game_session");
+    setLocation("/");
+  };
 
   return {
     gameState,
@@ -184,6 +189,7 @@ export function useGame() {
     votePlayer,
     playAgain,
     setReady,
-    sendChatMessage
+    sendChatMessage,
+    leaveRoom
   };
 }

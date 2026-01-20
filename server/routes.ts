@@ -359,6 +359,15 @@ export async function registerRoutes(
             await broadcastRoomState(currentRoomCode);
           }
         }
+
+        if (msg.type === "leave" && currentSessionId) {
+          const result = await storage.removePlayer(currentSessionId);
+          if (result) {
+            clients.delete(currentSessionId);
+            sessions.delete(currentSessionId);
+            await broadcastRoomState(result.roomCode);
+          }
+        }
       } catch (e) {
         console.error("WS Message Error", e);
       }
