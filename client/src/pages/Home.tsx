@@ -36,7 +36,7 @@ export default function Home() {
             <Ghost className="w-16 h-16 text-primary" />
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-primary tracking-tight">
-            يوسفي<span className="text-accent">.درەوکەر</span>
+            ياريا<span className="text-accent"> درەوکەر</span>
           </h1>
           <p className="text-lg text-muted-foreground font-medium">
             درەوی بکە وخو خلاس بکە جافی من
