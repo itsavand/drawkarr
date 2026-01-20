@@ -327,12 +327,14 @@ export default function Room() {
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-8 text-center"
           >
-            <div className="mb-4">
-              <span className="text-sm font-bold bg-primary/10 text-primary px-4 py-2 rounded-full uppercase tracking-widest">
-                پەیڤا {gameState.room.currentRound} ژ{" "}
-                {gameState.room.totalRounds}
-              </span>
-            </div>
+            {gameState.players.length >= 3 && (
+              <div className="mb-4">
+                <span className="text-sm font-bold bg-primary/10 text-primary px-4 py-2 rounded-full uppercase tracking-widest">
+                  پەیڤا {gameState.room.currentRound} ژ{" "}
+                  {gameState.room.totalRounds}
+                </span>
+              </div>
+            )}
 
             <GameCard className="bg-white/95">
               <div className="space-y-6">
@@ -394,76 +396,80 @@ export default function Room() {
               </div>
             </GameCard>
 
-            <div className="pt-4">
-              <h3 className="text-xl font-bold mb-4">خاڵ (Scores)</h3>
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                {gameState.players
-                  .sort((a, b) => (b.score || 0) - (a.score || 0))
-                  .map((p, idx) => (
-                    <div
-                      key={p.id}
-                      className="flex justify-between items-center py-3 border-b last:border-0 border-gray-100"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono font-bold text-gray-400 w-6">
-                          #{idx + 1}
-                        </span>
-                        <span className="font-bold">{p.name}</span>
-                        {p.isLiar && (
-                          <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                            درەوکەر
+            {gameState.players.length >= 3 && (
+              <>
+                <div className="pt-4">
+                  <h3 className="text-xl font-bold mb-4">خاڵ (Scores)</h3>
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                    {gameState.players
+                      .sort((a, b) => (b.score || 0) - (a.score || 0))
+                      .map((p, idx) => (
+                        <div
+                          key={p.id}
+                          className="flex justify-between items-center py-3 border-b last:border-0 border-gray-100"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="font-mono font-bold text-gray-400 w-6">
+                              #{idx + 1}
+                            </span>
+                            <span className="font-bold">{p.name}</span>
+                            {p.isLiar && (
+                              <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                                درەوکەر
+                              </span>
+                            )}
+                            {p.isReady && (
+                              <span className="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-black uppercase">
+                                به رهه فم
+                              </span>
+                            )}
+                          </div>
+                          <span className="font-bold text-primary">
+                            {p.score} خاڵ
                           </span>
-                        )}
-                        {p.isReady && (
-                          <span className="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-black uppercase">
-                            به رهه فم
-                          </span>
-                        )}
-                      </div>
-                      <span className="font-bold text-primary">
-                        {p.score} خاڵ
-                      </span>
-                    </div>
-                  ))}
-              </div>
-            </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
 
-            <div className="fixed bottom-8 left-0 right-0 px-4 flex justify-center gap-4">
-              {gameState.room.currentRound >= gameState.room.totalRounds ? (
-                <>
-                  {isHost ? (
+                <div className="fixed bottom-8 left-0 right-0 px-4 flex justify-center gap-4">
+                  {gameState.room.currentRound >= gameState.room.totalRounds ? (
+                    <>
+                      {isHost ? (
+                        <Button
+                          size="lg"
+                          className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl shadow-xl shadow-primary/30 btn-bounce"
+                          onClick={playAgain}
+                        >
+                          دووبارە یاری بکە
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl border-2"
+                          onClick={() => setLocation("/")}
+                        >
+                          دەرکەفتن
+                        </Button>
+                      )}
+                    </>
+                  ) : !me?.isReady ? (
                     <Button
                       size="lg"
                       className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl shadow-xl shadow-primary/30 btn-bounce"
-                      onClick={playAgain}
+                      onClick={setReady}
                     >
-                      دووبارە یاری بکە
+                      ئەز به رهه فم بۆ یا دی
                     </Button>
                   ) : (
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl border-2"
-                      onClick={() => setLocation("/")}
-                    >
-                      دەرکەفتن
-                    </Button>
+                    <div className="w-full max-w-md h-16 flex items-center justify-center bg-green-100 text-green-700 font-bold rounded-2xl border-2 border-green-200">
+                      ل هیڤیا یاریزانێن دی...
+                    </div>
                   )}
-                </>
-              ) : !me?.isReady ? (
-                <Button
-                  size="lg"
-                  className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl shadow-xl shadow-primary/30 btn-bounce"
-                  onClick={setReady}
-                >
-                  ئەز به رهه فم بۆ یا دی
-                </Button>
-              ) : (
-                <div className="w-full max-w-md h-16 flex items-center justify-center bg-green-100 text-green-700 font-bold rounded-2xl border-2 border-green-200">
-                  ل هیڤیا یاریزانێن دی...
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
