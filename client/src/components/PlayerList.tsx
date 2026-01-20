@@ -24,55 +24,69 @@ export function PlayerList({ players, showVotes = false, onVote, myPlayerId, pha
   const hasVoted = (player: Player) => player.hasVoted;
   const canVote = phase === 'voting' && !players.find(p => p.id === myPlayerId)?.hasVoted;
 
+  // Stable sorting: host first, then by ID to prevent jumping
+  const sortedPlayers = [...players].sort((a, b) => {
+    // If we are in voting phase, we keep a fixed order based on join time (id)
+    // In waiting room, host (idx 0) is usually first, but let's stick to ID for absolute stability
+    return a.id - b.id;
+  });
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-      {players.map((player, idx) => (
+    <div className="flex flex-col gap-3 w-full max-w-2xl mx-auto">
+      {sortedPlayers.map((player, idx) => (
         <motion.div
           key={player.id}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: idx * 0.1 }}
+          layout
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.2 }}
           onClick={() => {
             if (canVote && onVote && player.id !== myPlayerId) {
               onVote(player.id);
             }
           }}
           className={cn(
-            "relative p-4 rounded-2xl border-2 flex flex-col items-center justify-center gap-3 bg-white shadow-sm transition-all",
+            "relative p-3 rounded-2xl border-2 flex items-center gap-4 bg-white shadow-sm transition-all",
             canVote && player.id !== myPlayerId 
-              ? "cursor-pointer hover:border-primary hover:shadow-md hover:-translate-y-1 active:scale-95" 
+              ? "cursor-pointer hover:border-primary hover:shadow-md active:scale-[0.98]" 
               : "border-transparent",
             player.id === myPlayerId && "border-primary/20 bg-primary/5 ring-2 ring-primary/10"
           )}
         >
-          {player.id === myPlayerId && (
-            <div className="absolute top-2 right-2 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-              You
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <Avatar className="w-12 h-12 border-2 border-white shadow-sm shrink-0">
+              <AvatarFallback className={cn("text-lg font-bold", getAvatarColor(player.name))}>
+                {player.name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            
+            <div className="flex flex-col text-right flex-1 min-w-0">
+              <div className="flex items-center gap-2 justify-end">
+                {player.id === myPlayerId && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    تۆ
+                  </span>
+                )}
+                {idx === 0 && phase === 'waiting' && (
+                  <Crown className="w-4 h-4 text-yellow-500" />
+                )}
+                <p className="font-bold text-gray-800 truncate">{player.name}</p>
+              </div>
+              <p className="text-xs text-gray-500 font-semibold">{player.score} خاڵ</p>
             </div>
-          )}
-          
-          <Avatar className="w-16 h-16 border-4 border-white shadow-lg">
-            <AvatarFallback className={cn("text-xl font-bold", getAvatarColor(player.name))}>
-              {player.name.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          
-          <div className="text-center">
-            <p className="font-bold text-gray-800 truncate max-w-[120px]">{player.name}</p>
-            <p className="text-xs text-gray-500 font-semibold">{player.score} pts</p>
           </div>
 
-          {phase === 'voting' && hasVoted(player) && (
-            <div className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-md animate-bounce">
-              <Check className="w-4 h-4" />
-            </div>
-          )}
-          
-          {phase === 'waiting' && idx === 0 && (
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
-              <Crown className="w-3 h-3" /> Host
-            </div>
-          )}
+          <div className="flex items-center gap-1 min-w-[40px] justify-end">
+            {phase === 'voting' && hasVoted(player) && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="bg-green-500 text-white rounded-full p-1 shadow-sm"
+              >
+                <Check className="w-4 h-4" />
+              </motion.div>
+            )}
+          </div>
         </motion.div>
       ))}
     </div>
