@@ -108,7 +108,7 @@ export function Chat({ messages, onSendMessage, myPlayerId }: ChatProps) {
                       key={msg.id}
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex flex-col gap-1 sm:gap-1.5"
+                      className="flex flex-col gap-0.5"
                     >
                       <div className="flex items-center gap-1.5 sm:gap-2 px-1">
                         <span className={cn(
@@ -122,12 +122,12 @@ export function Chat({ messages, onSendMessage, myPlayerId }: ChatProps) {
                         </span>
                       </div>
                       <div className={cn(
-                        "rounded-xl sm:rounded-2xl p-2.5 sm:p-3 shadow-sm transition-colors max-w-[95%] sm:max-w-[90%]",
+                        "rounded-xl sm:rounded-2xl p-2 sm:p-2.5 shadow-sm transition-colors max-w-[95%] sm:max-w-[90%] break-words whitespace-pre-wrap overflow-hidden",
                         msg.playerId === myPlayerId 
                           ? "bg-primary text-primary-foreground rounded-tr-none" 
                           : "bg-white border border-border text-foreground rounded-tr-none"
                       )}>
-                        <p className="text-xs sm:text-sm leading-relaxed">
+                        <p className="text-xs sm:text-sm leading-tight">
                           {msg.content}
                         </p>
                       </div>
