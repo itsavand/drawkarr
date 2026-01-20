@@ -365,6 +365,16 @@ export async function registerRoutes(
           if (result) {
             clients.delete(currentSessionId);
             sessions.delete(currentSessionId);
+            
+            const remainingPlayers = await storage.getRoomPlayers(result.roomId);
+            const room = await storage.getRoom(result.roomCode);
+            
+            if (room && room.status !== "waiting" && remainingPlayers.length < 3) {
+              await storage.updateRoomStatus(result.roomId, "finished");
+              // We could add a special flag or message here if needed, 
+              // but we'll handle the UI based on player count and status
+            }
+            
             await broadcastRoomState(result.roomCode);
           }
         }

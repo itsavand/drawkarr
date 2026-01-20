@@ -336,42 +336,61 @@ export default function Room() {
 
             <GameCard className="bg-white/95">
               <div className="space-y-6">
-                <div className="text-6xl mb-4">
-                  {gameState.room.currentRound >= gameState.room.totalRounds
-                    ? "👑"
-                    : gameState.room.liarId &&
-                        gameState.players.find(
+                {status === "finished" && gameState.players.length < 3 ? (
+                  <div className="space-y-6">
+                    <div className="text-6xl mb-4">⚠️</div>
+                    <h1 className="text-3xl font-black text-destructive leading-tight">
+                      یاری بدوماهیک هات جونکی هین تنی ٢ نەفەر مان رومەکا دی بوخو جیکەن
+                    </h1>
+                    <Button
+                      variant="destructive"
+                      size="lg"
+                      className="w-full max-w-md h-16 text-2xl font-bold rounded-2xl shadow-xl mt-8"
+                      onClick={leaveRoom}
+                    >
+                      ده ركه فتن
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-6xl mb-4">
+                      {gameState.room.currentRound >= gameState.room.totalRounds
+                        ? "👑"
+                        : gameState.room.liarId &&
+                            gameState.players.find(
+                              (p) => p.id === gameState.room.liarId,
+                            )?.score
+                          ? "😈"
+                          : "🏆"}
+                    </div>
+
+                    <h1 className="text-5xl font-black text-primary">
+                      {gameState.room.currentRound >= gameState.room.totalRounds
+                        ? `سەرکەفتی: ${winner.name}`
+                        : "دوماهیا رۆندی"}
+                    </h1>
+
+                    <div className="bg-muted p-6 rounded-2xl">
+                      <p className="text-sm font-bold text-muted-foreground uppercase">
+                        درەوکەر ئەڤە بوو
+                      </p>
+                      <p className="text-3xl font-black text-destructive mt-1">
+                        {gameState.players.find(
                           (p) => p.id === gameState.room.liarId,
-                        )?.score
-                      ? "😈"
-                      : "🏆"}
-                </div>
+                        )?.name || "نەدیار"}
+                      </p>
+                    </div>
 
-                <h1 className="text-5xl font-black text-primary">
-                  {gameState.room.currentRound >= gameState.room.totalRounds
-                    ? `سەرکەفتی: ${winner.name}`
-                    : "دوماهیا رۆندی"}
-                </h1>
-
-                <div className="bg-muted p-6 rounded-2xl">
-                  <p className="text-sm font-bold text-muted-foreground uppercase">
-                    درەوکەر ئەڤە بوو
-                  </p>
-                  <p className="text-3xl font-black text-destructive mt-1">
-                    {gameState.players.find(
-                      (p) => p.id === gameState.room.liarId,
-                    )?.name || "نەدیار"}
-                  </p>
-                </div>
-
-                <div className="bg-green-50 p-6 rounded-2xl border border-green-100">
-                  <p className="text-sm font-bold text-green-700 uppercase">
-                    پەیڤا نهێنی ئەڤە بوو
-                  </p>
-                  <p className="text-3xl font-black text-green-800 mt-1">
-                    {gameState.room.secretWord}
-                  </p>
-                </div>
+                    <div className="bg-green-50 p-6 rounded-2xl border border-green-100">
+                      <p className="text-sm font-bold text-green-700 uppercase">
+                        پەیڤا نهێنی ئەڤە بوو
+                      </p>
+                      <p className="text-3xl font-black text-green-800 mt-1">
+                        {gameState.room.secretWord}
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </GameCard>
 
