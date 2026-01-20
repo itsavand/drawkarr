@@ -1,0 +1,119 @@
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '71',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3716',
+  routine: 'errorMissingColumn'
+}
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '71',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3716',
+  routine: 'errorMissingColumn'
+}
+WS Message Error error: column "voted_for" does not exist
+    at /app/dist/index.cjs:83:14227
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async /app/dist/index.cjs:89:31364
+    at async im.getPlayer (/app/dist/index.cjs:89:101686)
+    at async t.<anonymous> (/app/dist/index.cjs:89:108731) {
+  length: 109,
+  severity: 'ERROR',
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async /app/dist/index.cjs:89:31364
+    at async im.getPlayer (/app/dist/index.cjs:89:101686)
+WS Message Error error: column "voted_for" does not exist
+    at async t.<anonymous> (/app/dist/index.cjs:89:108731) {
+    at /app/dist/index.cjs:83:14227
+  length: 109,
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '71',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3716',
+  routine: 'errorMissingColumn'
+}
+WS Message Error error: column "voted_for" does not exist
+    at /app/dist/index.cjs:83:14227
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async /app/dist/index.cjs:89:31364
+    at async im.getPlayer (/app/dist/index.cjs:89:101686)
+    at async t.<anonymous> (/app/dist/index.cjs:89:108731) {
+  length: 109,
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '71',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3716',
+  routine: 'errorMissingColumn'
+}
+5:03:28 PM [express] POST /api/rooms 400 in 76ms :: {"message":"Invalid input"}
+5:03:34 PM [express] POST /api/rooms 400 in 54ms :: {"message":"Invalid input"}
+5:03:36 PM [express] POST /api/rooms 400 in 43ms :: {"message":"Invalid input"}
+WS Message Error error: column "voted_for" does not exist
+    at /app/dist/index.cjs:83:14227
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async /app/dist/index.cjs:89:31364
+    at async im.getPlayer (/app/dist/index.cjs:89:101686)
+    at async t.<anonymous> (/app/dist/index.cjs:89:108731) {
+  length: 109,
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '71',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3716',
+  routine: 'errorMissingColumn'
+}
+5:03:47 PM [express] POST /api/rooms 400 in 45ms :: {"message":"Invalid input"}
+5:03:56 PM [express] POST /api/rooms 400 in 71ms :: {"message":"Invalid input"}
+5:04:11 PM [express] POST /api/rooms 400 in 56ms :: {"message":"Invalid input"}
