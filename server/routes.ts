@@ -131,8 +131,10 @@ export async function registerRoutes(
         code: result.room.code,
         sessionId: result.sessionId,
         playerId: result.player.id,
+        name: result.player.name
       });
     } catch (e) {
+      console.error("Create Room Error:", e);
       res.status(400).json({ message: "Invalid input" });
     }
   });
@@ -145,8 +147,10 @@ export async function registerRoutes(
         code: result.room.code,
         sessionId: result.sessionId,
         playerId: result.player.id,
+        name: result.player.name
       });
     } catch (e: any) {
+      console.error("Join Room Error:", e);
       res.status(404).json({ message: e.message || "Room not found" });
     }
   });

@@ -100,7 +100,7 @@ export function useGame() {
     },
     onSuccess: (data) => {
       localStorage.setItem("party_game_session", JSON.stringify(data));
-      // Send create message to WS to link connection
+      // Send join message to WS to link connection
       if (socketRef.current?.readyState === WebSocket.OPEN) {
         socketRef.current.send(JSON.stringify({
           type: 'join',
