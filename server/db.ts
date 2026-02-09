@@ -4,15 +4,12 @@ import * as schema from "@shared/schema";
 
 const { Pool } = pg;
 
-// Fallback for build time or initial deployment setup
-// If DATABASE_URL is missing, we use a dummy pool to prevent startup crash
-const connectionString = process.env.DATABASE_URL;
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL must be set. Did you forget to provision a database?");
+}
 
-export const pool = connectionString 
-  ? new Pool({ 
-      connectionString,
-      ssl: connectionString.includes("localhost") ? false : { rejectUnauthorized: false }
-    })
-  : new Pool({ connectionString: "postgresql://postgres:postgres@localhost:5432/postgres" }); // Dummy fallback
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export const db = drizzle(pool, { schema });
