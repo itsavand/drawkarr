@@ -4,7 +4,7 @@ import { eq, and, sql, asc } from "drizzle-orm";
 import { randomBytes } from "crypto";
 
 export interface IStorage {
-  createRoom(hostName: string, rounds?: number): Promise<{ room: Room; player: Player; sessionId: string }>;
+  createRoom(hostName: string, category: string, rounds?: number): Promise<{ room: Room; player: Player; sessionId: string }>;
   joinRoom(code: string, playerName: string): Promise<{ room: Room; player: Player; sessionId: string }>;
   getRoom(code: string): Promise<Room | undefined>;
   getRoomPlayers(roomId: number): Promise<Player[]>;
@@ -26,7 +26,7 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  async createRoom(hostName: string, rounds: number = 1) {
+  async createRoom(hostName: string, category: string, rounds: number = 1) {
     // Generate 4 letter code
     let code = "";
     do {
@@ -39,6 +39,7 @@ export class DatabaseStorage implements IStorage {
       code,
       hostId: sessionId,
       status: "waiting",
+      category,
       totalRounds: rounds,
       currentRound: 1,
     }).returning();

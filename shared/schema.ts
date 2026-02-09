@@ -10,6 +10,7 @@ export const rooms = pgTable("rooms", {
   code: text("code").notNull().unique(),
   hostId: text("host_id").notNull(),
   status: text("status", { enum: ["waiting", "playing", "voting", "finished"] }).notNull().default("waiting"),
+  category: text("category").notNull().default("گشتی"),
   secretWord: text("secret_word"),
   liarId: integer("liar_id"),
   totalRounds: integer("total_rounds").notNull().default(1),
@@ -74,6 +75,9 @@ export const insertRoomSchema = createInsertSchema(rooms).omit({
   phaseEndTime: true,
   secretWord: true,
   liarId: true 
+}).extend({
+  category: z.string().min(1, "پێدڤی ب دیارکرنا جورێ پەیڤانە"),
+  rounds: z.number().min(1).max(5)
 });
 
 export const insertPlayerSchema = createInsertSchema(players).omit({ 

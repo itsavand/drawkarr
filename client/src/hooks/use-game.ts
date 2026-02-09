@@ -88,11 +88,11 @@ export function useGame() {
 
   // Actions
   const createRoom = useMutation({
-    mutationFn: async ({ name, rounds }: { name: string; rounds: number }) => {
+    mutationFn: async ({ name, rounds, category }: { name: string; rounds: number; category: string }) => {
       const res = await fetch(api.rooms.create.path, {
         method: api.rooms.create.method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, rounds })
+        body: JSON.stringify({ name, rounds, category })
       });
       
       if (!res.ok) throw new Error("Failed to create room");

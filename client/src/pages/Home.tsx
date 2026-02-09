@@ -2,27 +2,34 @@ import { useState } from "react";
 import { useGame } from "@/hooks/use-game";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GameCard } from "@/components/GameCard";
 import { motion } from "framer-motion";
-import { Loader2, Users, Play, Ghost } from "lucide-react";
+import { Loader2, Users, Ghost, LayoutGrid } from "lucide-react";
 
 export default function Home() {
   const { createRoom, joinRoom } = useGame();
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [rounds, setRounds] = useState(1);
+  const [category, setCategory] = useState("گشتی");
 
   const handleCreate = () => {
     if (!name.trim()) return;
-    createRoom.mutate({ name, rounds });
+    createRoom.mutate({ name, rounds, category });
   };
 
   const handleJoin = () => {
     if (!name.trim() || code.length !== 4) return;
     joinRoom.mutate({ code: code.toUpperCase(), name });
   };
+
+  const categories = [
+    { id: "گشتی", name: "گشتی" },
+    { id: "خوارن", name: "خوارن" },
+    { id: "ئاژەڵ", name: "ئاژەڵ" },
+    { id: "وەرزش", name: "وەرزش" }
+  ];
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -106,6 +113,25 @@ export default function Home() {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-muted-foreground ml-1">
+                  جۆرێ پەیڤان (Category)
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories.map((cat) => (
+                    <Button
+                      key={cat.id}
+                      variant={category === cat.id ? "default" : "outline"}
+                      className={`h-12 text-lg font-bold rounded-xl ${category === cat.id ? "bg-accent text-white shadow-md hover:bg-accent/90" : "bg-gray-50 border-2"}`}
+                      onClick={() => setCategory(cat.id)}
+                    >
+                      {cat.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <label className="text-sm font-bold text-muted-foreground ml-1">
                   هژمارا پەیڤان (Round)
@@ -123,6 +149,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+
               <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-100 flex gap-3 items-start">
                 <div className="bg-yellow-100 p-2 rounded-lg">
                   <Users className="w-5 h-5 text-yellow-600" />
